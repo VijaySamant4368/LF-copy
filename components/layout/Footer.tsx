@@ -1,0 +1,59 @@
+import Link from "next/link";
+import { Scale, ShieldAlert } from "lucide-react";
+import type { Category } from "@/lib/posts";
+
+export function Footer({ categories }: { categories: Category[] }) {
+  return (
+    <footer className="w-full bg-slate-950 text-slate-400 font-sans border-t border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 rounded bg-crimson-800 text-white flex items-center justify-center">
+                <Scale className="w-5 h-5" />
+              </div>
+              <span className="font-serif text-2xl font-extrabold text-white tracking-tight">LAWSFORUM</span>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-serif">
+              Placeholder description — legal education, case digests and exam prep for law students and practitioners.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-white border-b border-slate-800 pb-2 mb-3">
+              Categories
+            </h4>
+            <ul className="space-y-2 text-xs">
+              {categories.map((c) => (
+                <li key={c.slug}>
+                  <Link href={`/category/${c.slug}`} className="hover:text-amber-400 transition-colors">
+                    {c.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-serif text-sm font-bold uppercase tracking-wider text-white border-b border-slate-800 pb-2 mb-3 flex items-center gap-1">
+              <ShieldAlert className="w-4 h-4 text-amber-500" />
+              <span>Disclaimer</span>
+            </h4>
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              Placeholder content, intended for academic and informational purposes only. Not legal advice.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+          <p>© {new Date().getFullYear()} LawsForum. Placeholder footer.</p>
+          <div className="flex items-center space-x-4">
+            <span className="hover:text-slate-400">Privacy Policy</span>
+            <span>•</span>
+            <span className="hover:text-slate-400">Terms of Service</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
