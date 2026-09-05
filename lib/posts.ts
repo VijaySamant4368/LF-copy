@@ -7,8 +7,10 @@ import { query } from "./db";
 
 // Images stay at the original WP path (plan.md §6: "preserved exactly", zero rewriting).
 // media.path is relative ('2017/11/foo.jpg'); this is the one place the base is assembled.
-// Swap to the VPS's own host once rsync (§6) has actually moved the files there.
-const WP_UPLOADS_BASE = "https://lawsforum.com/wp-content/uploads";
+// Path-only, no host: prod serves this via nginx alias on the same domain (§6), and
+// dev serves it from public/wp-content/uploads/ (rsync'd copy) — both same-origin, no
+// remotePatterns entry needed either way.
+const WP_UPLOADS_BASE = "/wp-content/uploads";
 const FALLBACK_COVER = "/placeholder-cover.svg";
 
 export interface Author {

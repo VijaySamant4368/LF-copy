@@ -1,0 +1,85 @@
+
+---Upload files---
+Redux file was not uploaded. Error: No file provided.
+
+---Upload files---
+The import files were successfully uploaded!
+Initial max execution time = 30
+Files info:
+Site URL = https://lawsforum.in
+Data file = /home/j42r4gptfn6v/public_html/lawsforum.in/wp-content/uploads/2024/01/content-2.xml
+Widget file = /home/j42r4gptfn6v/public_html/lawsforum.in/wp-content/uploads/2024/01/widget-2.wie
+Customizer file = /home/j42r4gptfn6v/public_html/lawsforum.in/wp-content/uploads/2024/01/customizer-2.dat
+Redux files:
+not defined!
+
+---ocdi/before_content_import---
+
+
+---ocdi/before_widgets_import---
+
+
+---Importing widgets---
+Sidebar : 
+
+Mailchimp Sign-Up Form - No Title - Imported
+papr: Categories - Categories - Imported
+apsc_widget - No Title - Site does not support widget
+Papr - Recent Tabs - No Title - Imported
+Tag Cloud - No Title - Imported
+Text - Instagram - Imported
+
+Footer Bottom Right : 
+
+Block - No Title - Widget already exists
+Block - No Title - Widget already exists
+Navigation Menu - No Title - Widget already exists
+Navigation Menu - Entertainment - Widget already exists
+Navigation Menu - Health - Widget already exists
+Navigation Menu - About - Widget already exists
+
+Footer 1 : 
+
+Navigation Menu - World - Widget already exists
+
+Footer 2 : 
+
+Navigation Menu - International - Widget already exists
+
+Footer 3 : 
+
+Navigation Menu - Entertainment - Widget already exists
+
+Footer 4 : 
+
+Navigation Menu - Business - Widget already exists
+
+Footer 5 : 
+
+Navigation Menu - Health - Widget already exists
+
+Footer 6 : 
+
+Navigation Menu - About - Widget already exists
+
+Sidebar For About Page  : 
+
+apsc_widget - No Title - Site does not support widget
+Papr - Recent Tabs - No Title - Widget already exists
+Text - Instagram - Widget already exists
+
+Sidebar For Home 3  : 
+
+apsc_widget - No Title - Site does not support widget
+Mailchimp Sign-Up Form - No Title - Widget already exists
+papr: Categories - No Title - Widget already exists
+Papr - Recent Tabs - No Title - Widget already exists
+Text - Instagram - Widget already exists
+
+
+
+---Importing customizer settings---
+Customizer settings import finished!
+
+---ocdi/after_import---
+

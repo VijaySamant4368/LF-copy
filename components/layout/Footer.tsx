@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Scale, ShieldAlert } from "lucide-react";
+import { Scale, ShieldAlert, Facebook, Instagram, Linkedin, Youtube, Mail, PhoneCall } from "lucide-react";
 import type { Category } from "@/lib/posts";
 
 export function Footer({ categories }: { categories: Category[] }) {
@@ -51,6 +51,30 @@ export function Footer({ categories }: { categories: Category[] }) {
             <span className="hover:text-slate-400">Privacy Policy</span>
             <span>•</span>
             <span className="hover:text-slate-400">Terms of Service</span>
+          </div>
+          {/* moved from TopBar (removed) — keeps these links site-wide instead of home-sidebar-only */}
+          <div className="flex items-center space-x-3 text-slate-500">
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-blue-500 transition-colors" aria-label="Facebook">
+              <Facebook className="w-3.5 h-3.5" />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-slate-300 transition-colors" aria-label="X (Twitter)">
+              <span className="font-bold text-xs">𝕏</span>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-pink-500 transition-colors" aria-label="Instagram">
+              <Instagram className="w-3.5 h-3.5" />
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-blue-400 transition-colors" aria-label="LinkedIn">
+              <Linkedin className="w-3.5 h-3.5" />
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-red-600 transition-colors" aria-label="YouTube">
+              <Youtube className="w-3.5 h-3.5" />
+            </a>
+            <a href="mailto:info@lawsforum.com" className="hover:text-amber-400 transition-colors" aria-label="Email">
+              <Mail className="w-3.5 h-3.5" />
+            </a>
+            <a href="https://wa.me" target="_blank" rel="noreferrer" className="hover:text-emerald-500 transition-colors" aria-label="WhatsApp">
+              <PhoneCall className="w-3.5 h-3.5" />
+            </a>
           </div>
         </div>
       </div>

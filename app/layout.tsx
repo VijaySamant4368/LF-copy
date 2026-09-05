@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { TopBar } from "@/components/layout/TopBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { getCategories } from "@/lib/posts";
@@ -19,7 +18,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className="scroll-smooth">
       <body className="min-h-screen flex flex-col justify-between bg-editorial-bg font-sans">
         <div>
-          <TopBar />
           <Navbar />
           <main className="min-h-[calc(100vh-320px)]">{children}</main>
         </div>

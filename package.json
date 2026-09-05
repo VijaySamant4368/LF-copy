@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "list-media": "tsx scripts/list-media-paths.ts",
+    "list-unreferenced": "tsx scripts/list-unreferenced.ts",
+    "delete-unreferenced": "tsx scripts/delete-unreferenced.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
