@@ -69,7 +69,7 @@ export default async function CategoryArchivePage({ params }: { params: { slug: 
                       <div className="p-4 sm:p-5">
                         <div className="flex items-center space-x-2 text-[11px] text-slate-500 mb-2">
                           <Calendar className="w-3 h-3" />
-                          <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+                          <span>{new Date(post.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
                           <span>•</span>
                           <span>{post.readTimeMin} min read</span>
                         </div>

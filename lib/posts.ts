@@ -12,6 +12,10 @@ import { query } from "./db";
 // remotePatterns entry needed either way.
 const WP_UPLOADS_BASE = "/wp-content/uploads";
 const FALLBACK_COVER = "/placeholder-cover.svg";
+// Most real (ETL'd) authors have no avatar_url — WordPress never had one to
+// import. `<Image src="">` (empty string) throws at runtime, so fall back to
+// a real asset rather than "".
+const FALLBACK_AVATAR = "/placeholder-avatar.svg";
 
 export interface Author {
   id: string;
@@ -130,7 +134,7 @@ function mapPost(row: PostRow): Post {
   const author: Author = {
     id: String(row.author_id),
     name: row.author_name,
-    avatar: row.author_avatar ?? "",
+    avatar: row.author_avatar || FALLBACK_AVATAR,
     bio: row.author_bio ?? "",
   };
   return {
@@ -219,5 +223,5 @@ export async function getAuthorBySlug(slug: string): Promise<Author | undefined>
   );
   const row = rows[0];
   if (!row) return undefined;
-  return { id: String(row.id), name: row.display_name, avatar: row.avatar_url ?? "", bio: row.bio ?? "" };
+  return { id: String(row.id), name: row.display_name, avatar: row.avatar_url || FALLBACK_AVATAR, bio: row.bio ?? "" };
 }
