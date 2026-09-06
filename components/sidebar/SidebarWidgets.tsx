@@ -38,7 +38,7 @@ export function SidebarWidgets({ trendingPosts, categories }: { trendingPosts: P
                 <div className="flex items-center space-x-2 mt-1 text-[11px] text-slate-400">
                   <span>{post.category.name}</span>
                   <span>•</span>
-                  <span>{post.viewCount.toLocaleString()} views</span>
+                  <span>{post.viewCount.toLocaleString("en-US")} views</span>
                 </div>
               </div>
             </div>

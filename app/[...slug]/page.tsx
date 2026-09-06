@@ -16,6 +16,10 @@ export async function generateStaticParams() {
 }
 
 function resolve(segments: string[]) {
+  // A real post URL is always /{category...}/{postname} — at least 2 segments.
+  // Anything else (stray /favicon.ico, /robots.txt, etc. falling through to
+  // this catch-all) isn't a post; skip the DB round-trip and 404 immediately.
+  if (segments.length < 2) return Promise.resolve(undefined);
   const slug = segments[segments.length - 1];
   const categorySlug = segments.slice(0, -1).join("/");
   return getPostBySlug(categorySlug, slug);
@@ -73,7 +77,7 @@ export default async function PostDetailPage({ params }: { params: { slug: strin
               <div className="flex items-center space-x-4">
                 <span className="flex items-center space-x-1">
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>{new Date(post.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+                  <span>{new Date(post.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })}</span>
                 </span>
                 <span className="flex items-center space-x-1">
                   <Clock className="w-3.5 h-3.5" />
@@ -81,7 +85,7 @@ export default async function PostDetailPage({ params }: { params: { slug: strin
                 </span>
                 <span className="flex items-center space-x-1">
                   <Eye className="w-3.5 h-3.5" />
-                  <span>{post.viewCount.toLocaleString()} views</span>
+                  <span>{post.viewCount.toLocaleString("en-US")} views</span>
                 </span>
               </div>
             </div>

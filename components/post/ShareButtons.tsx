@@ -1,11 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Share2, Link2, Check, Linkedin, Facebook, Twitter } from "lucide-react";
+
+const SSR_FALLBACK_URL = "https://lawsforum.com";
 
 export function ShareButtons({ title, url }: { title: string; url?: string }) {
   const [copied, setCopied] = useState(false);
-  const currentUrl = url || (typeof window !== "undefined" ? window.location.href : "https://lawsforum.com");
+  // Reading window.location during the initial render would make the server-
+  // rendered HTML (no window, always SSR_FALLBACK_URL) disagree with the
+  // client's first paint (real window.location.href) -> hydration mismatch
+  // (React #418/#425) on every post page. Render the same fallback on both
+  // passes, then correct to the real URL client-side after hydration.
+  const [currentUrl, setCurrentUrl] = useState(url || SSR_FALLBACK_URL);
+  useEffect(() => {
+    if (!url) setCurrentUrl(window.location.href);
+  }, [url]);
 
   const copyToClipboard = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {

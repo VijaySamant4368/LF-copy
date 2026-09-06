@@ -59,7 +59,7 @@ export function EditorialSection({ initialPosts }: { initialPosts: Post[] }) {
                     <span>•</span>
                     <div className="flex items-center space-x-1">
                       <Calendar className="w-3 h-3" />
-                      <span>{new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                      <span>{new Date(post.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}</span>
                     </div>
                   </div>
 
@@ -80,7 +80,7 @@ export function EditorialSection({ initialPosts }: { initialPosts: Post[] }) {
                     </span>
                     <span className="flex items-center space-x-1">
                       <Eye className="w-3.5 h-3.5" />
-                      <span>{post.viewCount.toLocaleString()} views</span>
+                      <span>{post.viewCount.toLocaleString("en-US")} views</span>
                     </span>
                   </div>
 
