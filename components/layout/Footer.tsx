@@ -3,6 +3,10 @@ import { Scale, ShieldAlert, Facebook, Instagram, Linkedin, Youtube, Mail, Phone
 import type { Category } from "@/lib/posts";
 
 export function Footer({ categories }: { categories: Category[] }) {
+  // Full list is too long for a footer column; show the 5 most active ones.
+  // getCategories() orders alphabetically for the sidebar/hamburger use case,
+  // so re-sort by postCount here rather than change that default.
+  const topCategories = [...categories].sort((a, b) => (b.postCount ?? 0) - (a.postCount ?? 0)).slice(0, 5);
   return (
     <footer className="w-full bg-slate-950 text-slate-400 font-sans border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -24,7 +28,7 @@ export function Footer({ categories }: { categories: Category[] }) {
               Categories
             </h4>
             <ul className="space-y-2 text-xs">
-              {categories.map((c) => (
+              {topCategories.map((c) => (
                 <li key={c.slug}>
                   <Link href={`/category/${c.slug}`} className="hover:text-amber-400 transition-colors">
                     {c.name}

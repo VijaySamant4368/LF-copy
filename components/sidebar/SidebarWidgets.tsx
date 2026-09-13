@@ -46,7 +46,9 @@ export function SidebarWidgets({ trendingPosts, categories }: { trendingPosts: P
         </div>
       </div>
 
-      <div className="bg-white p-5 rounded-md border border-slate-200 shadow-sm">
+      {/* Desktop only - mobile gets this same list inside the Navbar hamburger instead
+          of stacking a second copy into the page flow below the main content. */}
+      <div className="hidden lg:block bg-white p-5 rounded-md border border-slate-200 shadow-sm">
         <div className="border-b-2 border-slate-900 pb-2 mb-4">
           <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
             <FolderOpen className="w-4 h-4 text-slate-700" />
@@ -54,7 +56,7 @@ export function SidebarWidgets({ trendingPosts, categories }: { trendingPosts: P
           </h3>
         </div>
 
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2 max-h-80 overflow-y-auto pr-1">
           {categories.map((cat) => (
             <Link key={cat.id} href={`/category/${cat.slug}`} className="flex items-center justify-between text-xs font-semibold py-1.5 px-2 rounded hover:bg-slate-100 text-slate-700 hover:text-crimson-800 transition-colors group">
               <span className="flex items-center gap-2">

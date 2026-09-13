@@ -161,7 +161,20 @@ function mapPost(row: PostRow): Post {
   };
 }
 
-export async function getPosts(opts?: { categorySlug?: string; limit?: number }): Promise<Post[]> {
+// Mirrors hotScoreFor() above exactly (views decayed by age in days), so DB-side
+// "hot" ordering agrees with the score shown/used client-side.
+const ORDER_BY: Record<"latest" | "hot" | "top", string> = {
+  latest: "p.published_at DESC",
+  top: "p.view_count DESC",
+  hot: "p.view_count / sqrt(GREATEST(1, EXTRACT(EPOCH FROM (now() - p.published_at)) / 86400)) DESC",
+};
+
+export async function getPosts(opts?: {
+  categorySlug?: string;
+  limit?: number;
+  offset?: number;
+  sort?: "latest" | "hot" | "top";
+}): Promise<Post[]> {
   const clauses: string[] = [];
   const params: unknown[] = [];
   if (opts?.categorySlug) {
@@ -170,13 +183,33 @@ export async function getPosts(opts?: { categorySlug?: string; limit?: number })
   }
   let sql = POST_ROW_QUERY;
   if (clauses.length) sql += ` AND ${clauses.join(" AND ")}`;
-  sql += ` ORDER BY p.published_at DESC`;
+  sql += ` ORDER BY ${ORDER_BY[opts?.sort ?? "latest"]}`;
   if (opts?.limit) {
     params.push(opts.limit);
     sql += ` LIMIT $${params.length}`;
   }
+  if (opts?.offset) {
+    params.push(opts.offset);
+    sql += ` OFFSET $${params.length}`;
+  }
   const { rows } = await query<PostRow>(sql, params);
   return rows.map(mapPost);
+}
+
+// Total published-post count for a filter, independent of sort - backs numbered
+// pagination (lib/posts.ts callers need this to compute page counts up front).
+export async function getPostsCount(opts?: { categorySlug?: string }): Promise<number> {
+  const clauses: string[] = ["p.status = 'published'"];
+  const params: unknown[] = [];
+  if (opts?.categorySlug) {
+    params.push(opts.categorySlug);
+    clauses.push(`c.slug = $${params.length}`);
+  }
+  const { rows } = await query<{ count: string }>(
+    `SELECT count(*) FROM posts p JOIN categories c ON c.id = p.primary_category_id WHERE ${clauses.join(" AND ")}`,
+    params
+  );
+  return Number(rows[0]?.count ?? 0);
 }
 
 export async function getPostBySlug(categorySlug: string, slug: string): Promise<Post | undefined> {

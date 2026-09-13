@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown, Search, Menu, X, Scale } from "lucide-react";
+import type { Category } from "@/lib/posts";
 
 interface DropdownItem { title: string; href: string }
 interface NavItem { title: string; href: string; dropdown?: DropdownItem[] }
@@ -64,11 +65,23 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-export function Navbar() {
+export function Navbar({ categories }: { categories: Category[] }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  // Which mobile accordion section is expanded - only one at a time, matches
+  // the desktop hover-dropdown's one-open-at-a-time feel. null = all collapsed.
+  const [openMobileSection, setOpenMobileSection] = useState<string | null>(null);
   const router = useRouter();
+
+  function toggleMobileMenu() {
+    setMobileMenuOpen((open) => !open);
+    setOpenMobileSection(null);
+  }
+
+  function toggleMobileSection(title: string) {
+    setOpenMobileSection((prev) => (prev === title ? null : title));
+  }
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,7 +147,7 @@ export function Navbar() {
           </button>
 
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={toggleMobileMenu}
             className="xl:hidden p-2 text-neutral-900 hover:bg-neutral-100 rounded"
             aria-label="Toggle Mobile Menu"
           >
@@ -167,13 +180,25 @@ export function Navbar() {
       )}
 
       {mobileMenuOpen && (
-        <div className="xl:hidden bg-white border-t border-neutral-200 px-4 py-4 space-y-2 shadow-lg">
+        <div className="xl:hidden bg-white border-t border-neutral-200 px-4 py-4 space-y-2 shadow-lg max-h-[calc(100vh-76px)] overflow-y-auto">
           {NAV_ITEMS.map((item) => (
             <div key={item.title} className="border-b border-neutral-100 pb-2">
-              <Link href={item.href} onClick={() => setMobileMenuOpen(false)} className="block text-sm font-bold text-neutral-900 hover:text-blue-700 py-1">
-                {item.title}
-              </Link>
-              {item.dropdown && (
+              <div className="flex items-center justify-between">
+                <Link href={item.href} onClick={() => setMobileMenuOpen(false)} className="flex-1 block text-sm font-bold text-neutral-900 hover:text-blue-700 py-1">
+                  {item.title}
+                </Link>
+                {item.dropdown && (
+                  <button
+                    onClick={() => toggleMobileSection(item.title)}
+                    className="p-1.5 text-neutral-500 hover:text-blue-700"
+                    aria-label={`Toggle ${item.title} submenu`}
+                    aria-expanded={openMobileSection === item.title}
+                  >
+                    <ChevronDown className={`w-4 h-4 transition-transform ${openMobileSection === item.title ? "rotate-180" : ""}`} />
+                  </button>
+                )}
+              </div>
+              {item.dropdown && openMobileSection === item.title && (
                 <div className="pl-3 space-y-1 mt-1">
                   {item.dropdown.map((sub) => (
                     <Link key={sub.title} href={sub.href} onClick={() => setMobileMenuOpen(false)} className="block text-xs text-neutral-600 hover:text-blue-700 py-0.5">
@@ -184,6 +209,37 @@ export function Navbar() {
               )}
             </div>
           ))}
+
+          {categories.length > 0 && (
+            <div className="border-b border-neutral-100 pb-2">
+              <button
+                onClick={() => toggleMobileSection("CATEGORIES")}
+                className="w-full flex items-center justify-between text-sm font-bold text-neutral-900 hover:text-blue-700 py-1"
+                aria-expanded={openMobileSection === "CATEGORIES"}
+              >
+                <span>CATEGORIES</span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${openMobileSection === "CATEGORIES" ? "rotate-180" : ""}`} />
+              </button>
+              {openMobileSection === "CATEGORIES" && (
+                <div className="pl-3 space-y-1 mt-1 max-h-56 overflow-y-auto">
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      href={`/category/${cat.slug}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-between gap-2 text-xs text-neutral-600 hover:text-blue-700 py-1"
+                    >
+                      <span className="flex items-center gap-1.5 min-w-0">
+                        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
+                        <span className="truncate">{cat.name}</span>
+                      </span>
+                      <span className="flex-shrink-0 text-neutral-400 font-mono text-[10px]">{cat.postCount ?? 0}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

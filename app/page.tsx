@@ -1,14 +1,19 @@
-import { getPosts, getCategories } from "@/lib/posts";
+import { getPosts, getPostsCount, getCategories } from "@/lib/posts";
 import { HeroMagazineGrid } from "@/components/home/HeroMagazineGrid";
 import { PopularPostsWidget } from "@/components/home/PopularPostsWidget";
 import { FacultySection } from "@/components/home/FacultySection";
-import { EditorialSection } from "@/components/home/EditorialSection";
+import { EditorialSection, EDITORIAL_PAGE_SIZE } from "@/components/home/EditorialSection";
 import { SocialFollowWidget } from "@/components/sidebar/SocialFollowWidget";
 import { SidebarWidgets } from "@/components/sidebar/SidebarWidgets";
 
 export default async function HomePage() {
-  const [allPosts, categories] = await Promise.all([getPosts({ limit: 30 }), getCategories()]);
+  const [allPosts, categories, totalPostCount] = await Promise.all([
+    getPosts({ limit: 30 }),
+    getCategories(),
+    getPostsCount(),
+  ]);
   const trendingPosts = [...allPosts].sort((a, b) => b.hotScore - a.hotScore);
+  const initialTotalPages = Math.max(1, Math.ceil(totalPostCount / EDITORIAL_PAGE_SIZE));
 
   return (
     <div className="w-full bg-[#FAFAFA] pb-16">
@@ -22,7 +27,7 @@ export default async function HomePage() {
 
           <div className="lg:col-span-6 space-y-8">
             <FacultySection posts={allPosts} />
-            <EditorialSection initialPosts={allPosts} />
+            <EditorialSection initialPosts={allPosts} initialTotalPages={initialTotalPages} />
           </div>
 
           <div className="lg:col-span-3 space-y-6">

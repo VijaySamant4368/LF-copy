@@ -18,7 +18,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className="scroll-smooth">
       <body className="min-h-screen flex flex-col justify-between bg-editorial-bg font-sans">
         <div>
-          <Navbar />
+          <Navbar categories={categories} />
           <main className="min-h-[calc(100vh-320px)]">{children}</main>
         </div>
         <Footer categories={categories} />
